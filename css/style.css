@@ -1,0 +1,160 @@
+body {
+  margin: 0;
+}
+
+/* letter-modal */
+#letter-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center;
+  z-index: 1000;
+}
+
+#modal-image {
+  width: 100%;
+  height: auto;
+  max-height: 95dvh;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleDown {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* letter close button */
+#close-letter-modal {
+  position: absolute;
+  top: 1dvw;
+  right: 1dvw;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+}
+
+/* letter paper */
+.letter-paper {
+  opacity: 0;
+  width: 100%;
+  height: auto;
+  max-height: 85dvh; /* 최대 크기 제한 */
+  padding: 5vw;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10rem);
+  }
+}
+
+/* letter heading */
+.letter-heading {
+  font-family: 'Georgia', serif;
+  font-size: 1.8rem; /* 반응형 폰트 크기 */
+  color: #333;
+  margin-bottom: 2vw;
+}
+
+/* letter body */
+.letter-body {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: #555;
+  margin-bottom: 3vw;
+}
+
+/* letter footer */
+.letter-footer {
+  font-family: 'Georgia', serif;
+  font-size: 1.7rem;
+  font-style: italic;
+  color: #888;
+  margin-top: 2vw;
+  text-align: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  background-color: transparent;
+  color: white;
+  border: none;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 110;
+  background-size: 0.875rem auto;
+}
