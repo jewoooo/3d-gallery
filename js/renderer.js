@@ -100,7 +100,7 @@ rectLightBackPillarHorizontal1.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal1);
 
 const rectLightBackPillarHorizontal2 = new THREE.RectAreaLight(0xffffff, 100, 0.8, 28);
-rectLightBackPillarHorizontal2.position.set(13., 0.62, -174.8);
+rectLightBackPillarHorizontal2.position.set(13.8, 0.62, -174.8);
 rectLightBackPillarHorizontal2.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal2);
 
