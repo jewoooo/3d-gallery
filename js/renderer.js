@@ -46,17 +46,29 @@ ambientLight.position.set(0,0,0);
 ambientLight.castShadow = true;
 scene.add(ambientLight);
 
-// 긴 복도 벽면
-const rectLightLongWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 287);
-rectLightLongWall.position.set(-26.3, 0.4, -111);
-rectLightLongWall.rotation.x = Math.PI / 2;
-scene.add(rectLightLongWall);
+// 긴 복도 왼쪽 벽면
+const rectLightLongLeftWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 287);
+rectLightLongLeftWall.position.set(-26.3, 0.4, -111);
+rectLightLongLeftWall.rotation.x = Math.PI / 2;
+scene.add(rectLightLongLeftWall);
+
+// 긴 복도 오른쪽 벽면
+const rectLightLongRightWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 287);
+rectLightLongRightWall.position.set(27.9, 0.5, -111);
+rectLightLongRightWall.rotation.x = Math.PI / 2;
+scene.add(rectLightLongRightWall);
 
 // 복도 끝 벽면
 const rectLightEndWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 54);
 rectLightEndWall.position.set(0.7, 0.4, -255);
 rectLightEndWall.rotation.set(Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightEndWall);
+
+// 복도 시작 벽면
+const rectLightFrontWall = new THREE.RectAreaLight(0xffffff, 25, 0.5, 54);
+rectLightFrontWall.position.set(0.7, 0.4, 28.9);
+rectLightFrontWall.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
+scene.add(rectLightFrontWall);
 
 // 앞 기둥 세로
 const rectLightFrontPillarVertical = new THREE.RectAreaLight(0xffffff, 100, 0.5, 34);
@@ -65,13 +77,13 @@ rectLightFrontPillarVertical.rotation.x = -Math.PI / 2;
 scene.add(rectLightFrontPillarVertical);
 
 // 앞 기둥 가로
-const rectLightFrontPillarHorizontal1 = new THREE.RectAreaLight(0xffffff, 100, 0.5, 27);
-rectLightFrontPillarHorizontal1.position.set(13.5, 0.62, -50.8);
+const rectLightFrontPillarHorizontal1 = new THREE.RectAreaLight(0xffffff, 100, 0.5, 28);
+rectLightFrontPillarHorizontal1.position.set(13.8, 0.62, -50.8);
 rectLightFrontPillarHorizontal1.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightFrontPillarHorizontal1);
 
-const rectLightFrontPillarHorizontal2 = new THREE.RectAreaLight(0xffffff, 100, 0.5, 27);
-rectLightFrontPillarHorizontal2.position.set(13.5, 0.62, -84.3);
+const rectLightFrontPillarHorizontal2 = new THREE.RectAreaLight(0xffffff, 100, 0.5, 28);
+rectLightFrontPillarHorizontal2.position.set(13.8, 0.62, -84.3);
 rectLightFrontPillarHorizontal2.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightFrontPillarHorizontal2);
 
@@ -82,13 +94,13 @@ rectLightBackPillarVertical.rotation.x = -Math.PI / 2;
 scene.add(rectLightBackPillarVertical);
 
 // 뒷 기둥 가로
-const rectLightBackPillarHorizontal1 = new THREE.RectAreaLight(0xffffff, 100, 0.8, 27);
-rectLightBackPillarHorizontal1.position.set(13.5, 0.62, -140.8);
+const rectLightBackPillarHorizontal1 = new THREE.RectAreaLight(0xffffff, 100, 0.8, 28);
+rectLightBackPillarHorizontal1.position.set(13.8, 0.62, -140.8);
 rectLightBackPillarHorizontal1.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal1);
 
-const rectLightBackPillarHorizontal2 = new THREE.RectAreaLight(0xffffff, 100, 0.8, 27);
-rectLightBackPillarHorizontal2.position.set(13.5, 0.62, -174.8);
+const rectLightBackPillarHorizontal2 = new THREE.RectAreaLight(0xffffff, 100, 0.8, 28);
+rectLightBackPillarHorizontal2.position.set(13., 0.62, -174.8);
 rectLightBackPillarHorizontal2.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal2);
 
@@ -110,12 +122,13 @@ loader.load(
       controls.target.set(camera.position.x, camera.position.y, camera.position.z - 1);
       controls.update();
     }
+    // 구획별로 1개의 원, 그리고 복도에 4개
     const positions = [
-      {x: 0, y: 0.7, z: -26},
+      {x: 2, y: 0.7, z: -10},
       {x: -12, y: 0.7, z: -60},
-      {x: 0, y: 0.7, z: -113},
+      {x: 2, y: 0.7, z: -113},
       {x: -12, y: 0.7, z: -154},
-      {x: 0, y: 0.7, z: -215.5},
+      {x: 2, y: 0.7, z: -215.5},
     ];
     positions.forEach((pos) => {
       const ring = new THREE.Mesh(ringGeometry, ringMaterial);
@@ -205,6 +218,9 @@ window.addEventListener("click", (event) => {
         case 7:
           modalImage.src = "./images/7.jpg";
           break;
+        case 8:
+          modalImage.src = "./images/8.jpg";
+          break;
       }
       modalContainer.style.display = "flex";
       return ;
@@ -218,7 +234,7 @@ window.addEventListener("click", (event) => {
       duration: 1.5,
       ease: "power2.inOut",
       onUpdate: () => {
-        if (target.x == 0) {
+        if (target.x == 2) {
           // 그림 앞으로 이동할 때
           camera.lookAt(new THREE.Vector3(target.x - 1, 11, target.z));
           controls.target.set(target.x - 1, 11, target.z);

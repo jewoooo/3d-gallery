@@ -7,7 +7,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100dvw;
   height: 100dvh;
   background: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
   display: flex;
@@ -62,8 +62,8 @@ body {
 .letter-paper {
   opacity: 0;
   width: 100%;
-  height: auto;
   max-height: 85dvh; /* 최대 크기 제한 */
+  height: auto;
   padding: 5vw;
   overflow-y: auto;
   background: #ffffff;
