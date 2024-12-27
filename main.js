@@ -104,12 +104,12 @@ rectLightBackPillarHorizontal2.position.set(13.8, 0.62, -174.8);
 rectLightBackPillarHorizontal2.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal2);
 
-let model;
 
 const loader = new GLTFLoader();
 loader.load(
-  "./images/gallery/gallery.glb",
+  "/model/gallery.glb",
   (gltf) => {
+    let model;
     model = gltf.scene;
 
     // 카메라 로드
@@ -198,28 +198,28 @@ window.addEventListener("click", (event) => {
 
       switch (clickedObject.userData.photo) {
         case 1:
-          modalImage.src = "./images/1.jpg";
+          modalImage.src = "/images/1.jpg";
           break;
         case 2:
-          modalImage.src = "./images/2.jpg";
+          modalImage.src = "/images/2.jpg";
           break;
         case 3:
-          modalImage.src = "./images/3.jpg";
+          modalImage.src = "/images/3.jpg";
           break;
         case 4:
-          modalImage.src = "./images/4.jpg";
+          modalImage.src = "/images/4.jpg";
           break;
         case 5:
-          modalImage.src = "./images/5.jpg";
+          modalImage.src = "/images/5.jpg";
           break;
         case 6:
-          modalImage.src = "./images/6.jpg";
+          modalImage.src = "/images/6.jpg";
           break;
         case 7:
-          modalImage.src = "./images/7.jpg";
+          modalImage.src = "/images/7.jpg";
           break;
         case 8:
-          modalImage.src = "./images/8.jpg";
+          modalImage.src = "/images/8.jpg";
           break;
       }
       modalContainer.style.display = "flex";
