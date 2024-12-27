@@ -61,8 +61,8 @@ body {
 /* letter paper */
 .letter-paper {
   opacity: 0;
-  width: 100%;
-  max-height: 85dvh; /* 최대 크기 제한 */
+  width: 60%;
+  max-height: 50dvh; /* 최대 크기 제한 */
   height: auto;
   padding: 5vw;
   overflow-y: auto;

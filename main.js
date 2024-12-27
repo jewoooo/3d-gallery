@@ -104,7 +104,6 @@ rectLightBackPillarHorizontal2.position.set(13.8, 0.62, -174.8);
 rectLightBackPillarHorizontal2.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
 scene.add(rectLightBackPillarHorizontal2);
 
-
 const loader = new GLTFLoader();
 loader.load(
   "/model/gallery.glb",
@@ -170,11 +169,10 @@ loader.load(
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-
-window.addEventListener("click", (event) => {
+function handleClickOrTouch(x, y) {
   // 마우스 좌표 정규화
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  mouse.x = (x / window.innerWidth) * 2 - 1;
+  mouse.y = -(y / window.innerHeight) * 2 + 1;
 
   // Raycaster로 클릭한 객체 찾기
   raycaster.setFromCamera(mouse, camera);
@@ -253,7 +251,48 @@ window.addEventListener("click", (event) => {
       }
     });
   }
+}
+
+// mouse click event
+window.addEventListener("click", (e) => {
+  handleClickOrTouch(e.clientX, e.clientY);
 });
+
+// touch event
+let isTouching = false;
+let startX = 0, startY = 0;
+let touchStartTime = 0;
+
+const THRESHOLD  = 5;
+const MAX_TOUCH_DURATION = 500;
+window.addEventListener("touchstart", (e) => {
+  if (e.touches.length > 1) return;
+
+  isTouching = true;
+  // 터치 시작 좌표 저장
+  const touch = e.touches[0];
+  startX = touch.clientX;
+  startY = touch.clientY;
+  // 터치 시작 시간 저장
+  touchStartTime = Date.now();
+});
+
+window.addEventListener("touchend", (e) => {
+  if (!isTouching) return;
+    const touch = e.changedTouches[0];
+    const endX = touch.clientX;
+    const endY = touch.clientY;
+
+    const deltaX = Math.abs(endX - startX);
+    const deltaY = Math.abs(endY - startY);
+    const touchDuration = Date.now() - touchStartTime;
+
+    if (deltaX < THRESHOLD && deltaY < THRESHOLD && touchDuration <= MAX_TOUCH_DURATION) {
+      handleClickOrTouch(touch.clientX, touch.clientY);
+    }
+    isTouching = false;
+});
+
 
 function closeImageModal() {
   document.getElementById("modal-image").style.animation = "scaleDown 0.4s ease-out forwards";
