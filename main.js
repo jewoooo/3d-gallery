@@ -54,7 +54,7 @@ scene.add(rectLightLongLeftWall);
 
 // 긴 복도 오른쪽 벽면
 const rectLightLongRightWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 287);
-rectLightLongRightWall.position.set(27.9, 0.5, -111);
+rectLightLongRightWall.position.set(20.2, 0.5, -111);
 rectLightLongRightWall.rotation.x = Math.PI / 2;
 scene.add(rectLightLongRightWall);
 
