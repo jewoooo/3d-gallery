@@ -283,17 +283,78 @@ const MAX_TOUCH_DURATION = 500;
 function initEventListeners() {
 
   // 사진 모달창 x 버튼 닫기
-  document.getElementById("close-modal").addEventListener("click", closeImageModal);
+  document.getElementById("close-modal").addEventListener("click", (e) => {
+		if (isTouching) return;
+		closeImageModal();
+	});
 
   // 사진 모달창 외부 클릭시 닫기
-  document.getElementById("modal-container").addEventListener("click", (event) => {
-    if (event.target.id === "modal-container") {
+  document.getElementById("modal-container").addEventListener("click", (e) => {
+		if (isTouching) return;
+    if (e.target.id === "modal-container") {
       closeImageModal();
     }
   });
 
+	// 사진 모달창 x 버튼 터치 이벤트
+	document.getElementById("close-modal").addEventListener("touchstart", (e) => {
+		if (e.touches.length > 1) return;
+		isTouching = true;
+
+		const touch = e.touches[0];
+		startX = touch.clientX;
+		startY = touch.clientY;
+		touchStartTime = Date.now();
+	});
+
+	document.getElementById("close-modal").addEventListener("touchend", (e) => {
+		if (!isTouching) return;
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		const touch = e.changedTouches[0];
+		const endX = touch.clientX;
+		const endY = touch.clientY;
+
+		const deltaX = Math.abs(endX - startX);
+		const deltaY = Math.abs(endY - startY);
+		const touchDuration = Date.now() - touchStartTime;
+		if (deltaX < THRESHOLD && deltaY < THRESHOLD && touchDuration <= MAX_TOUCH_DURATION) {
+			closeImageModal();
+		}
+		isTouching = false;
+	});
+
+		// 사진 모달창 x 버튼 터치 이벤트
+		document.getElementById("modal-container").addEventListener("touchstart", (e) => {
+			if (e.touches.length > 1) return;
+			isTouching = true;
+	
+			const touch = e.touches[0];
+			startX = touch.clientX;
+			startY = touch.clientY;
+			touchStartTime = Date.now();
+		});
+	
+		document.getElementById("modal-container").addEventListener("touchend", (e) => {
+			if (!isTouching) return;
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			const touch = e.changedTouches[0];
+			const endX = touch.clientX;
+			const endY = touch.clientY;
+	
+			const deltaX = Math.abs(endX - startX);
+			const deltaY = Math.abs(endY - startY);
+			const touchDuration = Date.now() - touchStartTime;
+			if (deltaX < THRESHOLD && deltaY < THRESHOLD && touchDuration <= MAX_TOUCH_DURATION) {
+				closeImageModal();
+			}
+			isTouching = false;
+		});
+
   // mouse click event
   window.addEventListener("click", (e) => {
+		if (isTouching)			return;
     handleClickOrTouch(e.clientX, e.clientY);
   });
 
@@ -301,6 +362,7 @@ function initEventListeners() {
   window.addEventListener("touchstart", (e) => {
     if (e.touches.length > 1) return;
   
+		console.log("touchstart");
     isTouching = true;
     // 터치 시작 좌표 저장
     const touch = e.touches[0];
@@ -312,6 +374,9 @@ function initEventListeners() {
 
   window.addEventListener("touchend", (e) => {
     if (!isTouching) return;
+			console.log("touchend");
+			e.preventDefault(); 
+    	e.stopImmediatePropagation();
       const touch = e.changedTouches[0];
       const endX = touch.clientX;
       const endY = touch.clientY;
