@@ -184,7 +184,8 @@ function handleClickOrTouch(x, y) {
   const intersects = raycaster.intersectObjects(clickableObjects.map(o => o.object));
 
   if (intersects.length > 0) {
-    // 클릭된 원 찾기
+		// 클릭된 원 찾기
+		if (isPhoto) return;
     controls.enabled = false;
     const clickedObject = intersects[0].object;
     
@@ -194,13 +195,11 @@ function handleClickOrTouch(x, y) {
     // 전역변수 move = true/false
     // GSAP 로 카메라 이동
     if (clickedObject.userData.photo != undefined) {
-			if (isPhoto) return;
 			isPhoto = true;
       controls.enabled = true;
       const modalContainer = document.getElementById("modal-container");
       let modalImage = document.getElementById("modal-image");
       modalImage.style.animation = "scaleUp 0.4s ease-out forwards";
-			isPhoto = true;
       switch (clickedObject.userData.photo) {
         case 1:
           modalImage.src = "/images/1.jpg";
@@ -230,8 +229,7 @@ function handleClickOrTouch(x, y) {
       modalContainer.style.display = "flex";
       return ;
     }
-		if (isPhoto) return;
-    // -> 화면의 잔움직임 + 원을 눌렀을 때 position을 토대로 카메라를 옮겨머림
+    // -> 화면의 잔움직임 + 원을 눌렀을 때 position을 토대로 카메라를 옮겨버림
     gsap.to(camera.position, {
       x: target.x,
       y: 11,
