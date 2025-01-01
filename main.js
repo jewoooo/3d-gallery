@@ -201,6 +201,7 @@ function handleClickOrTouch(x, y) {
       const modalContainer = document.getElementById("modal-container");
       let modalImage = document.getElementById("modal-image");
       modalImage.style.animation = "scaleUp 0.4s ease-out forwards";
+			console.log(modalImage.style.animation);
       switch (clickedObject.userData.photo) {
         case 1:
           modalImage.src = "/images/1.jpg";
@@ -393,6 +394,7 @@ function initEventListeners() {
   });
 }
 
+/* letter modal */
 function closeLetterModal() {
   document.getElementById("letter-modal-container").style.display = "none";
 
