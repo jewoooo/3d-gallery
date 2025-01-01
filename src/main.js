@@ -15,6 +15,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+
 // controls 생성
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.rotateSpeed = -0.5;
@@ -375,7 +376,7 @@ function initEventListeners() {
   window.addEventListener("touchend", (e) => {
     if (!isTouching) return;
 			console.log("touchend");
-			e.preventDefault(); 
+			e.preventDefault();
     	e.stopImmediatePropagation();
       const touch = e.changedTouches[0];
       const endX = touch.clientX;
