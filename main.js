@@ -60,11 +60,11 @@ loader.load(
       }
       // 구획별로 1개의 원, 그리고 복도에 4개
       const positions = [
-        {x: 2, y: 0.7, z: -10},
-        {x: -12, y: 0.7, z: -60},
-        {x: 2, y: 0.7, z: -113},
-        {x: -12, y: 0.7, z: -154},
-        {x: 2, y: 0.7, z: -215.5},
+        {x: 2, y: 0.7, z: -20},// 1st cirle
+        {x: -12, y: 0.7, z: -60},// 2nd circle
+        {x: 2, y: 0.7, z: -113},// 3rd circle
+        {x: -12, y: 0.7, z: -154},// 4th circle
+        {x: 2, y: 0.7, z: -207.5},// 5th circle
       ];
       positions.forEach((pos) => {
         const ring = new THREE.Mesh(ringGeometry, ringMaterial);
@@ -123,13 +123,13 @@ function setLights() {
 
   // 복도 끝 벽면
   const rectLightEndWall = new THREE.RectAreaLight(0xffffff, 30, 0.5, 54);
-  rectLightEndWall.position.set(0.7, 0.4, -255);
+  rectLightEndWall.position.set(0.7, 0.4, -234);
   rectLightEndWall.rotation.set(Math.PI / 2, 0, Math.PI / 2);
   scene.add(rectLightEndWall);
 
   // 복도 시작 벽면
   const rectLightFrontWall = new THREE.RectAreaLight(0xffffff, 25, 0.5, 54);
-  rectLightFrontWall.position.set(0.7, 0.4, 28.9);
+  rectLightFrontWall.position.set(0.7, 0.4, 8.4);
   rectLightFrontWall.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
   scene.add(rectLightFrontWall);
 
@@ -201,7 +201,6 @@ function handleClickOrTouch(x, y) {
       const modalContainer = document.getElementById("modal-container");
       let modalImage = document.getElementById("modal-image");
       modalImage.style.animation = "scaleUp 0.4s ease-out forwards";
-			console.log(modalImage.style.animation);
       switch (clickedObject.userData.photo) {
         case 1:
           modalImage.src = "/images/1.jpg";
@@ -364,7 +363,6 @@ function initEventListeners() {
   window.addEventListener("touchstart", (e) => {
     if (e.touches.length > 1) return;
   
-		console.log("touchstart");
     isTouching = true;
     // 터치 시작 좌표 저장
     const touch = e.touches[0];
@@ -376,7 +374,6 @@ function initEventListeners() {
 
   window.addEventListener("touchend", (e) => {
     if (!isTouching) return;
-			console.log("touchend");
 			e.preventDefault();
     	e.stopImmediatePropagation();
       const touch = e.changedTouches[0];
