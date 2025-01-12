@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+}
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.navigation-overlay {
+  position: absolute;
+  bottom: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.prev-btn {
+  background-color: #F0E6F3;
+}
+
+.next-btn {
+  background-color: #1E2C8A;
+  color: white;
+}
+
+.page-number {
+  font-size: 16px;
+  color: #333;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .nav-btn {
+      padding: 6px 12px;
+      font-size: 24px;
+  }
+  
+  .page-number {
+      font-size: 24px;
+  }
+  
+  .navigation-overlay {
+      gap: 25px;
+  }
+}
+
+
+.arrow {
+  font-weight: bold;
+}
+
+.nav-btn:hover {
+  transform: scale(1.05);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+#modal-image {
+  width: 100%;
+  height: auto;
+  max-height: 95dvh;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleDown {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  background-color: transparent;
+  color: white;
+  border: none;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 110;
+  background-size: 0.875rem auto;
+}

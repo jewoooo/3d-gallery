@@ -4,40 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Gallery</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="css/intro-modal.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div id="letter-modal-container">
-        <div class="letter-paper">
-            <button id="close-letter-modal" class="close">X</button>
-            <h1 class="letter-heading">Dear Everyone</h1>
-            <p class="letter-body">
-                Lorem Ipsum is simply dummy text of 
-                the printing and typesetting industry. 
-                Lorem Ipsum has been the industry's standard 
-                dummy text ever since the 1500s, 
-                when an unknown printer took a galley of type 
-                and scrambled it to make a type specimen book. 
-                It has survived not only five centuries, 
-                but also the leap into electronic typesetting, 
-                remaining essentially unchanged. 
-                It was popularised in the 1960s 
-                with the release of Letraset sheets 
-                containing Lorem Ipsum passages, 
-                and more recently with desktop 
-                publishing software like Aldus 
-                PageMaker including versions of 
-                Lorem Ipsum.
-            </p>
-            <p class="letter-footer">이제우, 멜로디 드림</p>
+<body class="modal-open">
+    <div id="intro-modal-container">
+        <div class="ticket">
+            <div class="front">
+                <div class="holo"></div>
+                <img src="/intro/instagram-logo.svg" alt="" class="logo">
+                <div class="divider"></div>
+            </div>
+            <div class="back">
+                <div class="holo"></div>
+                <img src="/intro/instagram-logo.svg" alt="" class="logo">
+                <div class="data">
+                    <div class="data-title">Date</div>
+                    <p>Sat Mar 22</p>
+                    <div class="data-title">Time</div>
+                    <p>14:00</p>
+                    <div class="data-title">Username</div>
+                    <p>mj.couple_</p>
+                    <a class="qr">
+                        <img src="/intro/mj.couple_qr.png" alt="">
+                    </a>
+                </div>
+                <div class="divider">
+                    <div class="username">
+                        <img src="/intro/instagram.png" alt="" class="profile">
+                        <div>mj.couple_</div>
+                        <img src="https://assets.codepen.io/13471/verified.png" alt="" class="verified">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="close-card-btn">&times;</button>
+    </div>
+    <div class="canvas-container">
+        <div class="navigation-overlay">
+            <button class="nav-btn prev-btn">
+                <span class="arrow">&#10094;</span>
+                Prev
+            </button>
+            <span class="page-number">1</span>
+            <button class="nav-btn next-btn">
+                Next
+                <span class="arrow">&#10095;</span>
+            </button>
         </div>
     </div>
     <div id="modal-container" class="modal">
         <div class="modal-content">
             <img id="modal-image" src="" alt="preview" />
-            <button id="close-modal" class="close">X</button>
+            <button id="close-modal" class="close">&times;</button>
         </div>
     </div>
-    <script src="/main.js" type="module" defer></script>
+    <script src="/js/main.js" type="module"></script>
 </body>
 </html>
