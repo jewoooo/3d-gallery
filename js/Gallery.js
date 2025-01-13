@@ -18,6 +18,7 @@ export class Gallery {
 		this.controls = this.initControls();
 
 		this.clickableObjects = [];
+		this.isIncrease = false;
 		this.photoNum = 1;
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
@@ -245,30 +246,56 @@ export class Gallery {
 					z: this.camera.position.z
 				},
 				{
-				x: newPosition.x,
-				y: newPosition.y,
-				z: newPosition.z,
-				duration: 1.2,
-				ease: "power2.inOut",
-				onUpdate: () => {
-					if (this.photoNum <= 4) {
-						this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
-						this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
-					} else if (this.photoNum <= 7) {
-						this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
-						this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
-					} else if (this.photoNum <= 11) {
-						this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
-						this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
-					}	else if (this.photoNum <= 14) {
-						this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
-						this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+					x: newPosition.x,
+					y: newPosition.y,
+					z: newPosition.z,
+					duration: 1.2,
+					ease: "power1.out",
+					onUpdate: () => {
+						if (this.photoNum === 1 && this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
+						}	else if (this.photoNum === 4 && !this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x + 1,  newPosition.y, newPosition.z);
+						} else if (this.photoNum === 5 && this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						} else if (this.photoNum === 7 && !this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						} else if (this.photoNum === 8 && this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						} else if (this.photoNum === 11 && !this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						} else if (this.photoNum === 12 && this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						} else if (this.photoNum === 14 && !this.isIncrease) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						}
+					},
+					onComplete: () => {
+						this.controls.enabled = true;
+						if (this.photoNum <= 4) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
+						} else if (this.photoNum <= 7) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						} else if (this.photoNum <= 11) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						}	else if (this.photoNum <= 14) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						}
 					}
-				},
-				onComplete: () => {
-					this.controls.enabled = true;
 				}
-		});
+			);
 		document.querySelector(".page-number").textContent = this.photoNum;
 	}
 
@@ -281,9 +308,19 @@ export class Gallery {
 			if (!button) return;
 
 			if (button.classList.contains("next-btn")) {
+				if (this.photoNum === 4 || this.photoNum === 7 || this.photoNum === 11 || this.photoNum === 14) {
+					this.isIncrease = true;
+				} else {
+					this.isIncrease = true;
+				}
 				this.photoNum = this.photoNum >= 14 ? 1 : this.photoNum + 1;
 			}
 			if (button.classList.contains("prev-btn")) {
+				if (this.photoNum === 5 || this.photoNum === 8 || this.photoNum === 12 || this.photoNum === 1) {
+					this.isIncrease = false;
+				} else {
+					this.isIncrease = false;
+				}
 				this.photoNum = this.photoNum <= 1 ? 14 : this.photoNum - 1;
 			}
 			const target = this.clickableObjects.find(o => o.object.userData.photo === this.photoNum).targetPosition;
