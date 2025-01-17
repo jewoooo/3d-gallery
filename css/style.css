@@ -4,8 +4,9 @@ body {
 
 .canvas-container {
   position: relative;
-  width: 100%;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 canvas {
@@ -16,25 +17,25 @@ canvas {
 
 .navigation-overlay {
   position: absolute;
-  bottom: 7%;
+  bottom: 9dvh;
   left: 50%;
   transform: translateX(-50%);
   display: none;
   align-items: center;
-  gap: 20px;
-  padding: 10px;
+  gap: 2rem;
+  padding: 0.8rem;
   z-index: 10;
 }
 
 .nav-btn {
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
   transition: all 0.3s ease;
 }
 
@@ -48,26 +49,9 @@ canvas {
 }
 
 .page-number {
-  font-size: 16px;
+  font-size: 1.2rem;
   color: #333;
 }
-
-/* 모바일 대응 */
-@media (max-width: 768px) {
-  .nav-btn {
-      padding: 6px 12px;
-      font-size: 24px;
-  }
-  
-  .page-number {
-      font-size: 24px;
-  }
-  
-  .navigation-overlay {
-      gap: 25px;
-  }
-}
-
 
 .arrow {
   font-weight: bold;

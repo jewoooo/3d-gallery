@@ -46,7 +46,7 @@ export class Gallery {
 		
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
 		renderer.toneMapping = THREE.ACESFilmicToneMapping;
-		renderer.toneMappingExposure = 0.6;
+		renderer.toneMappingExposure = 0.7;
 		
 		const pixelRatio = Math.min(window.devicePixelRatio, this.isMobile ? 2 : 3);
 		renderer.setPixelRatio(pixelRatio);
@@ -296,7 +296,7 @@ export class Gallery {
 					}
 				}
 			);
-		document.querySelector(".page-number").textContent = this.photoNum;
+		document.querySelector(".page-number").textContent = `${this.photoNum}`;
 	}
 
 	initEventListeners() {
