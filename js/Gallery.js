@@ -5,7 +5,7 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 export class Gallery {
 	constructor(container) {
-		this.isLoaded = false;
+		this.isRendered = false;
 		this.container = container;
 		this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 		this.scene = new THREE.Scene();
@@ -36,6 +36,7 @@ export class Gallery {
 		this.initLights();
 		this.initEventListeners();
 		this.loadGalleryModel();
+		this.animate();
 	}
 	initRenderer() {
 		const renderer = new THREE.WebGLRenderer({
@@ -104,7 +105,6 @@ export class Gallery {
 			undefined,
 			(error) => console.error("GLTF 로드 중 에러 발생:", error)
 		);
-		this.isLoaded = true;
 	}
 
 	handleModelLoad(gltf) {
@@ -290,6 +290,9 @@ export class Gallery {
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
 		this.renderer.render(this.scene, this.camera);
+		if (!this.isRendered) {
+			this.isRendered = true;
+		}
 	}
 }
 
