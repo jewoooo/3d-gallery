@@ -26,11 +26,11 @@ export class IntroModal {
 		ticket.addEventListener("mouseleave", () => {
 			this.playAnimations();
 		});
-		const closeBtn = document.querySelector(".close-card-btn");
-		closeBtn.addEventListener("click", () => {
-			const closeEvent = new CustomEvent("close");
-			this.container.dispatchEvent(closeEvent);
-		});
+		// const closeBtn = document.querySelector(".close-card-btn");
+		// closeBtn.addEventListener("click", () => {
+		// 	const closeEvent = new CustomEvent("close");
+		// 	this.container.dispatchEvent(closeEvent);
+		// });
 	}
 
 	pauseAnimations() {

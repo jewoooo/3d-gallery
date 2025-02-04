@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 export class Gallery {
 	constructor(container) {
+		this.isLoaded = false;
 		this.container = container;
 		this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 		this.scene = new THREE.Scene();
@@ -31,24 +32,24 @@ export class Gallery {
 		this.MAX_TOUCH_DURATION = 500;
 
 		// this.initHDR();
-		this.initGeometries();
+
 		this.initLights();
 		this.initEventListeners();
 		this.loadGalleryModel();
 	}
 	initRenderer() {
 		const renderer = new THREE.WebGLRenderer({
-			antialias: !(this.isMobile),
+			antialias: true,
 			powerPreference: this.isMobile ? "default" : "high-performance",
 			precision: this.isMobile ? "mediump" : "highp",
 			alpha: true,
 		});
 		
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
-		renderer.toneMapping = THREE.ACESFilmicToneMapping;
-		renderer.toneMappingExposure = 0.7;
+		renderer.toneMapping = THREE.ReinhardToneMapping;
+		renderer.toneMappingExposure = 1.2;
 		
-		const pixelRatio = Math.min(window.devicePixelRatio, this.isMobile ? 2 : 3);
+		const pixelRatio = Math.min(window.devicePixelRatio, 2);
 		renderer.setPixelRatio(pixelRatio);
 		renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -63,7 +64,7 @@ export class Gallery {
 	}
 
 	initLights() {
-		const ambientLight = new THREE.AmbientLight(0xffffff, 6);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
 		this.scene.add(ambientLight);
 	}
 	
@@ -91,25 +92,8 @@ export class Gallery {
 		undefined,
 		(error) => {
 			console.error("HDR 로드 중 에러 발생:", error);
-			initLights();
 		}
 	);
-	}
-
-	initGeometries() {
-		this.ringGeometry = new THREE.RingGeometry(0.6, 0.8);
-		this.ringMaterial = new THREE.MeshBasicMaterial({
-			color: 0xffffff,
-			opacity: 0.5,
-			transparent: true,
-			side: THREE.DoubleSide,
-		});
-		this.clickableGeometry = new THREE.CircleGeometry(0.8, 32);
-		this.clickableMaterial = new THREE.MeshBasicMaterial({
-			opacity: 0,
-			transparent: true,
-			side: THREE.DoubleSide,
-		});
 	}
 
 	loadGalleryModel() {
@@ -120,13 +104,11 @@ export class Gallery {
 			undefined,
 			(error) => console.error("GLTF 로드 중 에러 발생:", error)
 		);
+		this.isLoaded = true;
 	}
 
 	handleModelLoad(gltf) {
 		const model = gltf.scene;
-
-		
-		// this.setupCircleMarkers();
 		
 		this.setupModel(model);
 		this.scene.add(model);
@@ -153,31 +135,6 @@ export class Gallery {
 		document.querySelector(".navigation-overlay").style.display = "flex";
 	}
 
-	setupCircleMarkers() {
-		const positions = [
-			{x: 0, y: 0.01, z: 0},// center
-		];
-
-    positions.forEach(this.createCircleMarker.bind(this));
-	}
-
-	createCircleMarker(pos) {
-		const ring = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
-		ring.position.set(pos.x, pos.y, pos.z);
-		ring.rotation.x = Math.PI / 2;
-		this.scene.add(ring);
-
-		const clickableArea = new THREE.Mesh(this.clickableGeometry, this.clickableMaterial);
-		clickableArea.position.set(pos.x, pos.y, pos.z);
-		clickableArea.rotation.x = Math.PI / 2;
-		this.scene.add(clickableArea);
-
-		this.clickableObjects.push({
-			object: clickableArea,
-			targetPosition: pos,
-		});
-	}
-
 	setupModel(model) {
 		model.traverse((c) => {
 			if (c.userData.photo != undefined) {
@@ -187,6 +144,7 @@ export class Gallery {
 				});
 				if (c.userData.photo === 1) {
 					this.setupCamera(c.position);
+					document.querySelector(".page-number").textContent = `${this.photoNum}`;
 				}
 			}
 		})
@@ -303,6 +261,7 @@ export class Gallery {
 		window.addEventListener('click', (e) => {
 			this.handleClickOrTouch(e.clientX, e.clientY);
 		});
+		
 		document.querySelector(".navigation-overlay").addEventListener("click", (e) => {
 			const button = e.target.closest(".nav-btn");
 			if (!button) return;
