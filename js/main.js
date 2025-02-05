@@ -5,16 +5,19 @@ class App {
 	constructor() {
 		this.introModal = new IntroModal(document.getElementById("intro-modal-container"));
 		this.gallery = new Gallery(document.querySelector(".canvas-container"));
+
 		this.checkGalleryRender();
 		// this.initEventListeners();
 	}
 	
 	checkGalleryRender() {
 		if (this.gallery.isRendered) {
-			this.introModal.hide();
-		} else {
-			setTimeout(() => 
-				this.checkGalleryRender(), 100);
+			this.gallery.onFirstRender = () => {
+				this.introModal.hide();
+			}
+		}
+		if (!this.gallery.isRendered) {
+			requestAnimationFrame(() => this.checkGalleryRender());
 		}
 	}
 	// initEventListeners() {

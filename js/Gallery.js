@@ -6,6 +6,7 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 export class Gallery {
 	constructor(container) {
 		this.isRendered = false;
+		this.onFirstRender = null;
 		this.container = container;
 		this.isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 		this.scene = new THREE.Scene();
@@ -288,11 +289,31 @@ export class Gallery {
 	}
 
 	animate() {
-		requestAnimationFrame(this.animate.bind(this));
-		this.renderer.render(this.scene, this.camera);
 		if (!this.isRendered) {
 			this.isRendered = true;
+
+			this.renderer.render(this.scene, this.camera);
+
+			this.renderer.getContext().flush();
+
+			requestAnimationFrame(() => {
+				setTimeout(() => {
+					if (this.onFirstRender) {
+						this.onFirstRender();
+					}
+				}, 0)
+			})
 		}
+		
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				if (this.onFirstRender)
+						this.onFirstRender();
+			});
+		});
+		// requestAnimationFrame(this.animate.bind(this));
+		requestAnimationFrame(() => this.animate());
+		this.renderer.render(this.scene, this.camera);
 	}
 }
 
