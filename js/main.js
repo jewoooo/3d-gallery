@@ -6,8 +6,8 @@ class App {
 		this.introModal = new IntroModal(document.getElementById("intro-modal-container"));
 		this.gallery = new Gallery(document.querySelector(".canvas-container"));
 
-		this.introModal.hide();
-		// this.checkGalleryRender();
+		// this.introModal.hide();
+		this.checkGalleryRender();
 		// this.initEventListeners();
 	}
 	
@@ -16,7 +16,7 @@ class App {
 			if (this.gallery.isRendered) {
 				this.introModal.hide();
 			}
-		}, 5000);
+		}, 4000);
 	}
 	// initEventListeners() {
 	// 	document.getElementById("intro-modal-container").addEventListener("close", () => {

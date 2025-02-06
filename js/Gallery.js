@@ -183,10 +183,78 @@ export class Gallery {
 			const photoNumber = clickedObject.userData.photo;
 			if (this.photoNum === photoNumber) return ;
 			this.photoNum = photoNumber;
-			this.moveCamera(target);
+			this.moveCameraByImage(target);
 		}
 	}
 
+	moveCameraByImage(target) {
+		this.controls.enabled = false;
+		const viewHeight = 1.2;
+		const offsetWall = 1.17;
+		const distance = 2.2;
+
+		const newPosition = new THREE.Vector3(target.x, viewHeight, target.z);
+		if (this.photoNum <= 4) {
+		newPosition.z += offsetWall;
+		newPosition.x -= distance;
+		} else if (this.photoNum <= 7) {
+			newPosition.x -= offsetWall;
+			newPosition.z -= distance;
+		} else if (this.photoNum <= 11) {
+			newPosition.z -= offsetWall;
+			newPosition.x += distance;
+		} else if (this.photoNum <= 15) {
+				newPosition.x += offsetWall;
+				newPosition.z += distance;
+		}
+		gsap.timeline()
+			.fromTo(this.camera.position, 
+				{
+					x: this.camera.position.x,
+					y: this.camera.position.y,
+					z: this.camera.position.z
+				},
+				{
+					x: newPosition.x,
+					y: newPosition.y,
+					z: newPosition.z,
+					duration: 1.2,
+					ease: "power1.inOut",
+					onUpdate: () => {
+						if (this.photoNum <= 4) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
+						} else if (this.photoNum <= 7) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						} else if (this.photoNum <= 11) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						}	else if (this.photoNum <= 15) {
+							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						}
+					},
+					onComplete: () => {
+						this.controls.enabled = true;
+						// if (this.photoNum <= 4) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+						// 	this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
+						// } else if (this.photoNum <= 7) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+						// 	this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						// } else if (this.photoNum <= 11) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+						// 	this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						// }	else if (this.photoNum <= 15) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+						// 	this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						// }
+					}
+				}
+			);
+		document.querySelector(".page-number").textContent = `${this.photoNum}`;
+	}
 	moveCamera(target) {
 		this.controls.enabled = false;
 		const viewHeight = 1.2;
@@ -219,7 +287,7 @@ export class Gallery {
 					y: newPosition.y,
 					z: newPosition.z,
 					duration: 1.2,
-					ease: "power1.out",
+					ease: "power2.inOut",
 					onUpdate: () => {
 						if (this.photoNum === 1 && this.isIncrease) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
@@ -245,23 +313,55 @@ export class Gallery {
 						} else if (this.photoNum === 15 && !this.isIncrease) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
 							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						} else if (this.photoNum <= 4) {
+							const lookAtPoint = new THREE.Vector3(
+								this.camera.position.x + 1,
+								this.camera.position.y,
+								this.camera.position.z
+							)
+							this.camera.lookAt(lookAtPoint);
+							this.controls.target.copy(lookAtPoint);
+						} else if (this.photoNum <= 7) {
+							const lookAtPoint = new THREE.Vector3(
+								this.camera.position.x,
+								this.camera.position.y,
+								this.camera.position.z + 1
+							)
+							this.camera.lookAt(lookAtPoint);
+							this.controls.target.copy(lookAtPoint);
+						} else if (this.photoNum <= 11) {
+							const lookAtPoint = new THREE.Vector3(
+								this.camera.position.x - 1,
+								this.camera.position.y,
+								this.camera.position.z
+							)
+							this.camera.lookAt(lookAtPoint);
+							this.controls.target.copy(lookAtPoint);
+						}	else if (this.photoNum <= 15) {
+							const lookAtPoint = new THREE.Vector3(
+								this.camera.position.x,
+								this.camera.position.y,
+								this.camera.position.z - 1
+							)
+							this.camera.lookAt(lookAtPoint);
+							this.controls.target.copy(lookAtPoint);
 						}
 					},
 					onComplete: () => {
 						this.controls.enabled = true;
-						if (this.photoNum <= 4) {
-							this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
-							this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
-						} else if (this.photoNum <= 7) {
-							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
-							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
-						} else if (this.photoNum <= 11) {
-							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
-							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
-						}	else if (this.photoNum <= 15) {
-							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
-							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
-						}
+						// if (this.photoNum <= 4) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x + 1, newPosition.y, newPosition.z));
+						// 	this.controls.target.set(newPosition.x + 1, newPosition.y, newPosition.z);
+						// } else if (this.photoNum <= 7) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z + 1));
+						// 	this.controls.target.set(newPosition.x, newPosition.y, newPosition.z + 1);
+						// } else if (this.photoNum <= 11) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
+						// 	this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
+						// }	else if (this.photoNum <= 15) {
+						// 	this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
+						// 	this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
+						// }
 					}
 				}
 			);
@@ -313,8 +413,6 @@ export class Gallery {
 					},
 					onComplete: () => {
 						this.controls.enabled = true;
-						this.camera.lookAt(new THREE.Vector3(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1));
-						this.controls.target.set(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1);
 					}
 				}
 				);
@@ -328,7 +426,7 @@ export class Gallery {
 
 	animate() {
 		if (!this.isRendered) {
-			// this.isRendered = true;
+			this.isRendered = true;
 
 			this.renderer.render(this.scene, this.camera);
 
