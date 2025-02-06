@@ -21,7 +21,7 @@ export class Gallery {
 
 		this.clickableObjects = [];
 		this.isIncrease = false;
-		this.photoNum = 1;
+		this.photoNum = 0;
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
 
@@ -32,6 +32,8 @@ export class Gallery {
 		this.THRESHOLD = 5;
 		this.MAX_TOUCH_DURATION = 500;
 
+		this.startingPosition;
+		this.startingRotation;
 		// this.initHDR();
 
 		this.initLights();
@@ -39,6 +41,7 @@ export class Gallery {
 		this.loadGalleryModel();
 		this.animate();
 	}
+
 	initRenderer() {
 		const renderer = new THREE.WebGLRenderer({
 			antialias: true,
@@ -111,30 +114,37 @@ export class Gallery {
 	handleModelLoad(gltf) {
 		const model = gltf.scene;
 		
+		this.camera.position.copy(gltf.cameras[0].position);
+		this.startingPosition = this.camera.position.clone();
+		this.camera.rotation.copy(gltf.cameras[0].rotation);
+		this.startingRotation = this.camera.rotation.clone();
+		this.controls.object = this.camera;
+		this.controls.target.set(this.camera.position.x - 0.5, this.camera.position.y, this.camera.position.z + 1);
+		document.querySelector(".navigation-overlay").style.display = "flex";
 		this.setupModel(model);
 		this.scene.add(model);
 	}
 
-	setupCamera(targetPosition) {
-		const viewHeight = 1.2;
-		const offsetWall = 1.18;
-		const distance = 2.2;
+	// setupCamera(targetPosition) {
+	// 	const viewHeight = 1.2;
+	// 	const offsetWall = 1.18;
+	// 	const distance = 2.2;
 
-		this.camera.position.set(
-			targetPosition.x - distance,
-			viewHeight,
-			targetPosition.z + (offsetWall - 0.01)
-		);
+	// 	this.camera.position.set(
+	// 		targetPosition.x - distance,
+	// 		viewHeight,
+	// 		targetPosition.z + (offsetWall - 0.01)
+	// 	);
 
-		this.controls.object = this.camera;
-		this.controls.target.set(
-			this.camera.position.x + 1,
-			this.camera.position.y,
-			this.camera.position.z
-		);
-		this.controls.update();
-		document.querySelector(".navigation-overlay").style.display = "flex";
-	}
+	// 	this.controls.object = this.camera;
+	// 	this.controls.target.set(
+	// 		this.camera.position.x + 1,
+	// 		this.camera.position.y,
+	// 		this.camera.position.z
+	// 	);
+	// 	this.controls.update();
+	// 	document.querySelector(".navigation-overlay").style.display = "flex";
+	// }
 
 	setupModel(model) {
 		model.traverse((c) => {
@@ -143,10 +153,10 @@ export class Gallery {
 					object: c,
 					targetPosition: c.position,
 				});
-				if (c.userData.photo === 1) {
-					this.setupCamera(c.position);
-					document.querySelector(".page-number").textContent = `${this.photoNum}`;
-				}
+				// if (c.userData.photo === 1) {
+				// 	this.setupCamera(c.position);
+				// 	document.querySelector(".page-number").textContent = `${this.photoNum}`;
+				// }
 			}
 		})
 	}
@@ -193,7 +203,7 @@ export class Gallery {
 		} else if (this.photoNum <= 11) {
 			newPosition.z -= offsetWall;
 			newPosition.x += distance;
-		} else if (this.photoNum <= 14) {
+		} else if (this.photoNum <= 15) {
 				newPosition.x += offsetWall;
 				newPosition.z += distance;
 		}
@@ -232,7 +242,7 @@ export class Gallery {
 						} else if (this.photoNum === 12 && this.isIncrease) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
 							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
-						} else if (this.photoNum === 14 && !this.isIncrease) {
+						} else if (this.photoNum === 15 && !this.isIncrease) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
 							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
 						}
@@ -248,7 +258,7 @@ export class Gallery {
 						} else if (this.photoNum <= 11) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x - 1, newPosition.y, newPosition.z));
 							this.controls.target.set(newPosition.x - 1, newPosition.y, newPosition.z);
-						}	else if (this.photoNum <= 14) {
+						}	else if (this.photoNum <= 15) {
 							this.camera.lookAt(new THREE.Vector3(newPosition.x, newPosition.y, newPosition.z - 1));
 							this.controls.target.set(newPosition.x, newPosition.y, newPosition.z - 1);
 						}
@@ -268,12 +278,12 @@ export class Gallery {
 			if (!button) return;
 
 			if (button.classList.contains("next-btn")) {
-				if (this.photoNum === 4 || this.photoNum === 7 || this.photoNum === 11 || this.photoNum === 14) {
+				if (this.photoNum === 4 || this.photoNum === 7 || this.photoNum === 11 || this.photoNum === 15) {
 					this.isIncrease = true;
 				} else {
 					this.isIncrease = true;
 				}
-				this.photoNum = this.photoNum >= 14 ? 1 : this.photoNum + 1;
+				this.photoNum = this.photoNum >= 15 ? 0 : this.photoNum + 1;
 			}
 			if (button.classList.contains("prev-btn")) {
 				if (this.photoNum === 5 || this.photoNum === 8 || this.photoNum === 12 || this.photoNum === 1) {
@@ -281,7 +291,35 @@ export class Gallery {
 				} else {
 					this.isIncrease = false;
 				}
-				this.photoNum = this.photoNum <= 1 ? 14 : this.photoNum - 1;
+				this.photoNum = this.photoNum <= 0 ? 15 : this.photoNum - 1;
+			}
+			if (this.photoNum === 0) {
+				gsap.timeline()
+						.fromTo(this.camera.position, 
+				{
+					x: this.camera.position.x,
+					y: this.camera.position.y,
+					z: this.camera.position.z
+				},
+				{
+					x: this.startingPosition.x,
+					y: this.startingPosition.y,
+					z: this.startingPosition.z,
+					duration: 1.2,
+					ease: "power1.out",
+					onUpdate: () => {
+						this.camera.lookAt(new THREE.Vector3(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1));
+						this.controls.target.set(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1);
+					},
+					onComplete: () => {
+						this.controls.enabled = true;
+						this.camera.lookAt(new THREE.Vector3(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1));
+						this.controls.target.set(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1);
+					}
+				}
+				);
+				document.querySelector(".page-number").textContent = 'Gallery';
+				return ;
 			}
 			const target = this.clickableObjects.find(o => o.object.userData.photo === this.photoNum).targetPosition;
 			this.moveCamera(target);
@@ -290,27 +328,13 @@ export class Gallery {
 
 	animate() {
 		if (!this.isRendered) {
-			this.isRendered = true;
+			// this.isRendered = true;
 
 			this.renderer.render(this.scene, this.camera);
 
 			this.renderer.getContext().flush();
-
-			requestAnimationFrame(() => {
-				setTimeout(() => {
-					if (this.onFirstRender) {
-						this.onFirstRender();
-					}
-				}, 0)
-			})
 		}
 		
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				if (this.onFirstRender)
-						this.onFirstRender();
-			});
-		});
 		// requestAnimationFrame(this.animate.bind(this));
 		requestAnimationFrame(() => this.animate());
 		this.renderer.render(this.scene, this.camera);

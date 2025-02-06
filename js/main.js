@@ -6,19 +6,17 @@ class App {
 		this.introModal = new IntroModal(document.getElementById("intro-modal-container"));
 		this.gallery = new Gallery(document.querySelector(".canvas-container"));
 
-		this.checkGalleryRender();
+		this.introModal.hide();
+		// this.checkGalleryRender();
 		// this.initEventListeners();
 	}
 	
 	checkGalleryRender() {
-		if (this.gallery.isRendered) {
-			this.gallery.onFirstRender = () => {
+		setTimeout(() => {
+			if (this.gallery.isRendered) {
 				this.introModal.hide();
 			}
-		}
-		if (!this.gallery.isRendered) {
-			requestAnimationFrame(() => this.checkGalleryRender());
-		}
+		}, 5000);
 	}
 	// initEventListeners() {
 	// 	document.getElementById("intro-modal-container").addEventListener("close", () => {
