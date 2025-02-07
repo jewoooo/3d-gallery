@@ -369,10 +369,84 @@ export class Gallery {
 	}
 
 	initEventListeners() {
+		// safari
+		window.addEventListener('touchstart', (e) => {
+			if (e.touches.length === 1) {// 싱글 터치
+				e.preventDefault();
+				const touch = e.touches[0];
+				this.handleClickOrTouch(touch.clientX, touch.clientY);
+			}
+		}, { passive: false });
+
+		// safari double tap
+		let lastTap = 0;
+		window.addEventListener('touchend', (e) => {
+			const currentTime = new Date().getTime();
+			const tapLength = currentTime - lastTap;
+			if (tapLength < 500 && tapLength > 0) {
+				e.preventDefault();
+			}
+			lastTap = currentTime;
+		});
+
+		window.addEventListener('dblclick', (e) => {
+			e.preventDefault();
+		});
+
 		window.addEventListener('click', (e) => {
 			this.handleClickOrTouch(e.clientX, e.clientY);
 		});
-		
+		// safari touch event
+		document.querySelector(".navigation-overlay").addEventListener("touchstart", (e) => {
+			const button = e.target.closest(".nav-btn");
+			if (!button) return;
+
+			if (button.classList.contains("next-btn")) {
+				if (this.photoNum === 4 || this.photoNum === 7 || this.photoNum === 11 || this.photoNum === 15) {
+					this.isIncrease = true;
+				} else {
+					this.isIncrease = true;
+				}
+				this.photoNum = this.photoNum >= 15 ? 0 : this.photoNum + 1;
+			}
+			if (button.classList.contains("prev-btn")) {
+				if (this.photoNum === 5 || this.photoNum === 8 || this.photoNum === 12 || this.photoNum === 1) {
+					this.isIncrease = false;
+				} else {
+					this.isIncrease = false;
+				}
+				this.photoNum = this.photoNum <= 0 ? 15 : this.photoNum - 1;
+			}
+			if (this.photoNum === 0) {
+				gsap.timeline()
+						.fromTo(this.camera.position, 
+				{
+					x: this.camera.position.x,
+					y: this.camera.position.y,
+					z: this.camera.position.z
+				},
+				{
+					x: this.startingPosition.x,
+					y: this.startingPosition.y,
+					z: this.startingPosition.z,
+					duration: 1.2,
+					ease: "power1.out",
+					onUpdate: () => {
+						this.camera.lookAt(new THREE.Vector3(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1));
+						this.controls.target.set(this.startingPosition.x - 0.5, this.startingPosition.y, this.startingPosition.z + 1);
+					},
+					onComplete: () => {
+						this.controls.enabled = true;
+					}
+				}
+				);
+				document.querySelector(".page-number").textContent = 'Gallery';
+				return ;
+			}
+			const target = this.clickableObjects.find(o => o.object.userData.photo === this.photoNum).targetPosition;
+			this.moveCamera(target);
+		}, { passive: false });
+
 		document.querySelector(".navigation-overlay").addEventListener("click", (e) => {
 			const button = e.target.closest(".nav-btn");
 			if (!button) return;
