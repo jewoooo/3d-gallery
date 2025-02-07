@@ -17,7 +17,7 @@ class App {
 				this.introModal.hide();
 				document.querySelector(".back-btn").style.display = "inline-block";
 			}
-		}, 4800);
+		}, 5000);
 	}
 	// initEventListeners() {
 	// 	document.getElementById("intro-modal-container").addEventListener("close", () => {

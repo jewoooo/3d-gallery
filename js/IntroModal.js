@@ -3,7 +3,7 @@ import gsap from "gsap";
 export class IntroModal {
 	constructor(container) {
 		this.container = container;
-		this.speed = 2.3;
+		this.speed = 2.5;
 		this.init();
 		this.initEventListeners();
 	}
