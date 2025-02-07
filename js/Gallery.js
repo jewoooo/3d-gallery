@@ -417,7 +417,14 @@ export class Gallery {
 			const target = this.clickableObjects.find(o => o.object.userData.photo === this.photoNum).targetPosition;
 			this.moveCamera(target);
 	}
-	
+
+	handleBack(e) {
+		if (e.type === 'touchstart') {
+			e.preventDefault();
+		}
+		window.history.back();
+	}
+
 	initEventListeners() {
 		// safari
 		window.addEventListener('touchstart', (e) => {
@@ -446,13 +453,21 @@ export class Gallery {
 		window.addEventListener('click', (e) => {
 			this.handleClickOrTouch(e.clientX, e.clientY);
 		});
-		// safari touch event
+		// safari touch event in navigation overlay
 		document.querySelector(".navigation-overlay").addEventListener("touchstart", (e) => {
 			this.handleBtnClick(e);
 		}, { passive: false });
 
 		document.querySelector(".navigation-overlay").addEventListener("click", (e) => {
 			this.handleBtnClick(e);
+		});
+		
+		// back-btn touch and click
+		document.querySelector(".back-btn").addEventListener("touchstart", (e) => {
+			this.handleBack(e);
+		}, { passive: false });
+		document.querySelector(".back-btn").addEventListener("click", (e) => {
+			this.handleBack(e);
 		});
 	}
 

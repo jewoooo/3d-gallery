@@ -41,13 +41,23 @@ canvas {
 
 .prev-btn {
   background-color: #F0E6F3;
-  opacity: 0.4;
+  opacity: 0.6;
 }
 
 .next-btn {
   background-color: #1E2C8A;
   color: white;
-  opacity: 0.4;
+  opacity: 0.6;
+}
+
+.back-btn {
+  display: none;
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  background-color: #F0E6F3;
+  opacity: 0.6;
 }
 
 .page-number {

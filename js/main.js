@@ -15,6 +15,7 @@ class App {
 		setTimeout(() => {
 			if (this.gallery.isRendered) {
 				this.introModal.hide();
+				document.querySelector(".back-btn").style.display = "inline-block";
 			}
 		}, 4000);
 	}
