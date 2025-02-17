@@ -422,7 +422,11 @@ export class Gallery {
 		if (e.type === 'touchstart') {
 			e.preventDefault();
 		}
-		window.history.back();
+		if (window.history.length > 1) {
+			window.history.back();
+		} else {
+			window.close();
+		}
 	}
 
 	initEventListeners() {
